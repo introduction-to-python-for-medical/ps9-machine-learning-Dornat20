@@ -1,2 +1,2 @@
-selected_features: ["PPE", "RPDE"]
+selected_features: ['PPE', 'RPDE']
 path: "my_model.joblib"
