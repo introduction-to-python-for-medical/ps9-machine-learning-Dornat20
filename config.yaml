@@ -1,4 +1,4 @@
-import yaml
+...import yaml
 
 # Load the config file
 with open('config.yaml', 'r') as file:
