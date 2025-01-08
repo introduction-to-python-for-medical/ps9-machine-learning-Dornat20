@@ -1,12 +1,2 @@
-...import yaml
-
-# Load the config file
-with open('config.yaml', 'r') as file:
-    config = yaml.safe_load(file)
-
-# Use the config values
-selected_features = config['selected_features']
-model_path = config['path']
-
-print("Selected features:", selected_features)
-print("Model path:", model_path)
+selected_features: ["PPE", "RPDE"]
+path: "my_model.joblib"
