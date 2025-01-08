@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 import joblib
 
 # 1. Load the dataset
-data = pd.read_csv('parkinsons.csv')
+data_df = pd.read_csv('/content/parkinsons.csv')
 
 # 2. Select features and target
 # Replace 'PPE' and 'RPDE' with the actual column names for features
