@@ -1,34 +1,45 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+parkinsons_df = pd.read_csv('/content/parkinsons.csv')
+parkinsons_df = parkinsons_df.dropna()
+parkinsons_df.head()
+
+
+input_features = ['DFA', 'PPE']
+output_feature = ['status']
+X = parkinsons_df[['DFA', 'PPE']]
+y = parkinsons_df['status']
+
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.svm import SVC
-import joblib
 
-# 1. Load the dataset
-data_df = pd.read_csv('/content/parkinsons.csv')
-
-# 2. Select features and target
-# Replace 'PPE' and 'RPDE' with the actual column names for features
-# Replace 'status' with the target column
-X = data[['PPE', 'RPDE']]  # Two input features
-y = data['status']  # Target output
-
-# 3. Scale the data
+# Initialize the MinMaxScaler
 scaler = MinMaxScaler()
+
+# Fit and transform the input features
 X_scaled = scaler.fit_transform(X)
 
-# 4. Split the data
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+from sklearn.model_selection import train_test_split
 
-# 5. Train the model
-model = SVC(kernel='linear', random_state=42)
-model.fit(X_train, y_train)
+# Split the data into training and validation sets
+X_train, X_val, y_train, y_val = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-# 6. Evaluate the model
-accuracy = model.score(X_test, y_test)
-print(f"Model accuracy: {accuracy}")
 
-# 7. Save the model
-joblib.dump(model, 'my_model.joblib')
-print("Model saved as my_model.joblib")
+from sklearn.svm import SVC
 
+svc = SVC(kernel='linear', C=2, random_state = 42) 
+svc.fit(X_train, y_train)
+y_pred = svc.predict(X_val)
+
+from sklearn.metrics import accuracy_score
+
+accuracy = accuracy_score(y_val, y_pred)
+print(f"Accuracy: {accuracy}")
+
+if accuracy < 0.8:
+    print("Accuracy is below the required threshold of 0.8. Please adjust the model or features.")
+
+import joblib
+
+joblib.dump(svc, 'par.joblib')
